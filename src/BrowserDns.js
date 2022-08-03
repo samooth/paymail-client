@@ -10,11 +10,10 @@ class BrowserDns {
       const response = await this.doh.resolveSrv(aDomain)
       if (response.Status === 0 && response.Answer) {
         const data = response.Answer.map(record => {
-          const [priority, weight, port, name] = record.data.split(' ')
+          const [priority, weight, name] = record.data.split(' ')
           return {
             priority,
             weight,
-            port,
             name,
             isSecure: response.AD
           }
