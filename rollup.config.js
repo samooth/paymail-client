@@ -1,4 +1,4 @@
-import babel from 'rollup-plugin-babel'
+import babel from '@rollup/plugin-babel'
 import builtins from 'rollup-plugin-node-builtins'
 import commonJS from '@rollup/plugin-commonjs'
 import fs from 'fs'
@@ -18,13 +18,11 @@ export default [
     output: [
       {
         file: pkg.main,
-        format: 'cjs',
-        sourcemap: true
+        format: 'cjs'
       },
       {
         file: pkg.module,
-        format: 'es',
-        sourcemap: true
+        format: 'es'
       }
     ],
     plugins: [
@@ -45,63 +43,63 @@ export default [
       })
     ]
   },
-  ...(PRODUCTION_BUILD ? [{
-    input: path.resolve(__dirname, 'src', 'index.js'),
-    external: ['bsv', 'bsv/message'],
-    output: [
-      {
-        file: pkg.unpkg,
-        format: 'iife',
-        name: pkg.library,
-        sourcemap: true,
-        globals: { bsv: 'bsv' }
-      }
-    ],
-    context: 'window',
-    plugins: [
-      replace(getReplacements()),
-      globals(),
-      builtins(),
-      resolve({
-        browser: true,
-        preferBuiltins: true
-      }),
-      commonJS({
-        namedExports: {
-          '../../node_modules/loglevel/lib/loglevel.js': [
-            'setLevel',
-            'trace',
-            'debug',
-            'info',
-            'warn',
-            'error'
-          ]
-        }
-      }),
-      babel({
-        exclude: ['../../node_modules/**', 'node_modules/**'],
-        presets: [
-          [
-            '@babel/preset-env',
-            {
-              modules: false,
-              targets: {
-                browsers: ['> 2%']
-              }
-            }
-          ]
+  ...(PRODUCTION_BUILD
+    ? [{
+        input: path.resolve(__dirname, 'src', 'index.js'),
+        external: ['bsv'],
+        output: [
+          {
+            file: pkg.unpkg,
+            format: 'iife',
+            name: pkg.library,
+            globals: { bsv: 'bsvjs' }
+          }
         ],
-        runtimeHelpers: true,
-        plugins: getBabelPlugins({ includeTransformRuntime: true })
-      }),
-      terser({
-        sourcemap: true,
-        output: {
-          preamble: getBanner()
-        }
-      })
-    ]
-  }] : [])
+        context: 'window',
+        plugins: [
+          replace(getReplacements()),
+          globals(),
+          builtins(),
+          resolve({
+            browser: true,
+            preferBuiltins: true
+          }),
+          commonJS({
+            namedExports: {
+              '../../node_modules/loglevel/lib/loglevel.js': [
+                'setLevel',
+                'trace',
+                'debug',
+                'info',
+                'warn',
+                'error'
+              ]
+            }
+          }),
+          babel({
+            exclude: ['../../node_modules/**', 'node_modules/**'],
+            presets: [
+              [
+                '@babel/preset-env',
+                {
+                  modules: false,
+                  targets: {
+                    browsers: ['> 2%']
+                  }
+                }
+              ]
+            ],
+            babelHelpers: 'runtime',
+            plugins: getBabelPlugins({ includeTransformRuntime: true })
+          }),
+          terser({
+            output: {
+              preamble: getBanner()
+            }
+          })
+        ]
+      }]
+    : [])
 ]
 
 function isExternal (candidate) {
