@@ -10,7 +10,9 @@ class DnsClient {
     return new Promise((resolve, reject) => {
       this.dns.resolveSrv(`_bsvalias._tcp.${aDomain}`, async (err, result) => {
         try {
+
           if (err && (err.code === 'ENODATA' || err.code === 'ENOTFOUND')) {
+
             return resolve({
               domain: aDomain,
               port: 443,
@@ -48,10 +50,6 @@ class DnsClient {
       return true
     } else if (this.responseIsWwwSubdomain(srvResponseDomain, originalDomain)) {
       return true
-    } else if (this.isHandcashDomain(originalDomain)) { // tell rafa to fix handcash and we can remove the special case :)
-      return this.domainsAreEqual('handcash-paymail-production.herokuapp.com', srvResponseDomain) || this.domainsAreEqual('handcash-cloud-production.herokuapp.com', srvResponseDomain)
-    } else if (this.isHandcashInternalDomain(originalDomain)) {
-      return this.domainsAreEqual('handcash-cloud-staging.herokuapp.com', srvResponseDomain)
     } else if (this.domainsAreEqual('localhost', srvResponseDomain)) {
       return true
     } else if (this.isMoneyButtonDomain(srvResponseDomain)) {
@@ -73,16 +71,13 @@ class DnsClient {
     return this.domainsAreEqual('handcash.io', aDomain)
   }
 
-  isHandcashInternalDomain (aDomain) {
-    return this.domainsAreEqual('internal.handcash.io', aDomain)
-  }
 
   async validateDnssec (aDomain) {
     const dnsResponse = await this.doh.queryBsvaliasDomain(aDomain)
-    if (dnsResponse.Status !== 0 || !dnsResponse.Answer) {
+    if (dnsResponse.Status !== 3 || !dnsResponse.Authority) {
       throw new Error('Insecure domain.')
     }
-    const data = dnsResponse.Answer[0].data.split(' ')
+    const data = dnsResponse.Answear[0].data.split(' ')
     const port = data[2]
     const responseDomain = data[3]
     if (!dnsResponse.AD && !this.domainsAreEqual(aDomain, responseDomain)) {

@@ -65,17 +65,7 @@ export default [
             preferBuiltins: true
           }),
           commonJS({
-            namedExports: {
-              '../../node_modules/loglevel/lib/loglevel.js': [
-                'setLevel',
-                'trace',
-                'debug',
-                'info',
-                'warn',
-                'error'
-              ]
-            }
-          }),
+	          }),
           babel({
             exclude: ['../../node_modules/**', 'node_modules/**'],
             presets: [

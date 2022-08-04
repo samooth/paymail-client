@@ -5,7 +5,7 @@ import { Http } from './http'
 
 class EndpointResolver {
   constructor (dns = null, fetch) {
-    this.dnsClient = new DnsClient(dns, new DnsOverHttps(fetch, { baseUrl: 'https://dns.google.com/resolve' }))
+    this.dnsClient = new DnsClient(dns, new DnsOverHttps(fetch, { baseUrl: 'https://cloudflare-dns.com/dns-query' }))
 
     this.http = new Http(fetch)
     this._cache = {}
@@ -77,6 +77,8 @@ class EndpointResolver {
   }
 
   async getApiDescriptionFor (aDomain) {
+        console.log("getApiDescriptionFor")
+
     if (this._cache[aDomain]) {
       return this._cache[aDomain]
     }
@@ -93,7 +95,7 @@ class EndpointResolver {
     if (!requestDomain) {
       throw new Error(`Invalid domain: ${domain}`)
     }
-    const wellKnown = await this.http.get(`${protocol}://${requestDomain}${requestPort}/.well-known/bsvalias`)
+    const wellKnown = await this.http.get(`${protocol}://${domain}${requestPort}/.well-known/bsvalias`,{ headers:{ 'accept': 'application/dns-json' }})
     const apiDescriptor = await wellKnown.json()
     return apiDescriptor
   }
