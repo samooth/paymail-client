@@ -77,7 +77,6 @@ class EndpointResolver {
   }
 
   async getApiDescriptionFor (aDomain) {
-        console.log("getApiDescriptionFor")
 
     if (this._cache[aDomain]) {
       return this._cache[aDomain]
@@ -95,7 +94,7 @@ class EndpointResolver {
     if (!requestDomain) {
       throw new Error(`Invalid domain: ${domain}`)
     }
-    const wellKnown = await this.http.get(`${protocol}://${domain}${requestPort}/.well-known/bsvalias`,{ headers:{ 'accept': 'application/dns-json' }})
+    const wellKnown = await this.http.get(`${protocol}://${domain}${requestPort}/.well-known/bsvalias`, { headers: { accept: 'application/dns-json' } })
     const apiDescriptor = await wellKnown.json()
     return apiDescriptor
   }

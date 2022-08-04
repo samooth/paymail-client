@@ -51,7 +51,7 @@
     "@rollup/plugin-replace": "4.0.0",
     "babel-eslint": "9.0.0",
     "bdd-lazy-var": "2.6.1",
-    "chai": "4.3.6",
+    "chai": "^4.3.6",
     "dotenv-cli": "6.0.0",
     "events": "^3.3.0",
     "http-server": "14.1.1",

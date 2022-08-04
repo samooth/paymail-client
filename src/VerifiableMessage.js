@@ -27,12 +27,12 @@ class VerifiableMessage {
     ])
   }
 
-  sign (wifPrivateKey) {
-    return this.message.sign(this.bsv.PrivateKey.fromWIF(wifPrivateKey))
+  sign (keypair) {
+    return this.message.sign(this.message, keypair)
   }
 
-  verify (keyAddress, signature) {
-    return this.message.verify(keyAddress, signature)
+  verify (signature, keyAddress) {
+    return this.message.verify(this.message,  signature, keyAddress)
   }
 }
 

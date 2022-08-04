@@ -64,8 +64,7 @@ export default [
             browser: true,
             preferBuiltins: true
           }),
-          commonJS({
-	          }),
+          commonJS({ }),
           babel({
             exclude: ['../../node_modules/**', 'node_modules/**'],
             presets: [

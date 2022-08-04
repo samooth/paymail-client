@@ -10,9 +10,7 @@ class DnsClient {
     return new Promise((resolve, reject) => {
       this.dns.resolveSrv(`_bsvalias._tcp.${aDomain}`, async (err, result) => {
         try {
-
           if (err && (err.code === 'ENODATA' || err.code === 'ENOTFOUND')) {
-
             return resolve({
               domain: aDomain,
               port: 443,
@@ -70,7 +68,6 @@ class DnsClient {
   isHandcashDomain (aDomain) {
     return this.domainsAreEqual('handcash.io', aDomain)
   }
-
 
   async validateDnssec (aDomain) {
     const dnsResponse = await this.doh.queryBsvaliasDomain(aDomain)

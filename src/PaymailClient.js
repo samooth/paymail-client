@@ -100,7 +100,7 @@ class PaymailClient {
     if (paymail) {
       if (pubkey && await this.resolver.domainHasCapability(paymail.split('@')[1], CapabilityCodes.verifyPublicKeyOwner)) {
         if (await this.verifyPubkeyOwner(pubkey, paymail)) {
-          senderPublicKey = this.bsv.PublicKey.fromString(pubkey)
+          senderPublicKey = this.bsv.PubKey.fromString(pubkey)
         } else {
           return false
         }
@@ -108,16 +108,16 @@ class PaymailClient {
         const hasPki = await this.resolver.domainHasCapability(paymail.split('@')[1], CapabilityCodes.pki)
         if (hasPki) {
           const identityKey = await this.getPublicKey(paymail)
-          senderPublicKey = this.bsv.PublicKey.fromString(identityKey)
+          senderPublicKey = this.bsv.PubKey.fromString(identityKey)
         } else {
           return false
         }
       }
     }
 
-    const senderKeyAddress = this.bsv.Address.fromPublicKey(senderPublicKey || pubkey)
+    const senderKeyAddress = this.bsv.Address.fromPubKey(senderPublicKey || pubkey)
     try {
-      const verified = message.verify(senderKeyAddress.toString(), signature)
+      const verified = message.verify( signature, senderKeyAddress.toString())
       return verified
     } catch (err) {
       return false

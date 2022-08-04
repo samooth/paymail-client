@@ -5,7 +5,7 @@ class DnsOverHttps {
   }
 
   async resolveSrv (aDomain) {
-    const response = await this.fetch(`${this.config.baseUrl}?name=${aDomain}&type=SRV&cd=0`,{ headers:{ 'accept': 'application/dns-json' }})
+    const response = await this.fetch(`${this.config.baseUrl}?name=${aDomain}&type=SRV&cd=0`, { headers: { accept: 'application/dns-json' } })
     const body = await response.json()
     return body
   }
