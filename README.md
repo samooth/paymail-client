@@ -7,7 +7,7 @@ Javascript client to interact with BSV paymail protocol.
 ## Ussage.
 
 ``` javascript
-import { PaymailClient, Verifi } from '@moneybutton/paymail-client'
+import { PaymailClient, VerifiableMessage } from '@moneybutton/paymail-client'
 import fetch from 'isomorphic-fetch'
 import dns from 'dns'
 import bsv from 'bsv'
