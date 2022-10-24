@@ -5,7 +5,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var brfc = require('@moneybutton/brfc');
 var AbortController = require('abort-controller');
 var moment = require('moment');
-var fetch = require('isomorphic-fetch');
+var fetch = require('cross-fetch');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 

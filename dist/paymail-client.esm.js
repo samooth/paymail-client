@@ -1,7 +1,7 @@
 import { brfc } from '@moneybutton/brfc';
 import AbortController from 'abort-controller';
 import moment from 'moment';
-import fetch from 'isomorphic-fetch';
+import fetch from 'cross-fetch';
 
 const CapabilityCodes = {
   pki: 'pki',
