@@ -14,12 +14,12 @@ const CapabilityCodes = {
 };
 
 // import { DnsOverHttps } from "./dns-over-https"
+
 class DnsClient {
   constructor(dns, doh) {
     this.dns = dns;
     this.doh = doh;
   }
-
   async checkSrv(aDomain) {
     return new Promise((resolve, reject) => {
       this.dns.resolveSrv(`_bsvalias._tcp.${aDomain}`, async (err, result) => {
@@ -31,11 +31,9 @@ class DnsClient {
               isSecure: true
             });
           }
-
           if (err) {
             return reject(err);
           }
-
           const {
             name: domainFromDns,
             port,
@@ -61,7 +59,6 @@ class DnsClient {
       return err;
     });
   }
-
   checkDomainIsSecure(srvResponseDomain, originalDomain) {
     if (this.domainsAreEqual(srvResponseDomain, originalDomain)) {
       return true;
@@ -75,45 +72,35 @@ class DnsClient {
       return false;
     }
   }
-
   isMoneyButtonDomain(aDomain) {
     return this.domainsAreEqual(aDomain, 'moneybutton.com') || this.domainsAreEqual(aDomain, 'www.moneybutton.com');
   }
-
   responseIsWwwSubdomain(srvResponseDomain, originalDomain) {
     return this.domainsAreEqual(srvResponseDomain, `www.${originalDomain}`);
   }
-
   isHandcashDomain(aDomain) {
     return this.domainsAreEqual('handcash.io', aDomain);
   }
-
   async validateDnssec(aDomain) {
     const dnsResponse = await this.doh.queryBsvaliasDomain(aDomain);
-
     if (dnsResponse.Status !== 3 || !dnsResponse.Authority) {
       throw new Error('Insecure domain.');
     }
-
     const data = dnsResponse.Answear[0].data.split(' ');
     const port = data[2];
     const responseDomain = data[3];
-
     if (!dnsResponse.AD && !this.domainsAreEqual(aDomain, responseDomain)) {
       throw new Error('Insecure domain.');
     }
-
     return {
       port,
       domain: responseDomain,
       isSecure: dnsResponse.AD
     };
   }
-
   domainsAreEqual(domain1, domain2) {
     return domain1.replace(/\.$/, '') === domain2.replace(/\.$/, '');
   }
-
 }
 
 class DnsOverHttps {
@@ -121,7 +108,6 @@ class DnsOverHttps {
     this.fetch = fetch;
     this.config = config;
   }
-
   async resolveSrv(aDomain) {
     const response = await this.fetch(`${this.config.baseUrl}?name=${aDomain}&type=SRV&cd=0`, {
       headers: {
@@ -131,26 +117,21 @@ class DnsOverHttps {
     const body = await response.json();
     return body;
   }
-
   async queryBsvaliasDomain(aDomain) {
     return this.resolveSrv(`_bsvalias._tcp.${aDomain}`);
   }
-
 }
 
 function ownKeys(object, enumerableOnly) {
   var keys = Object.keys(object);
-
   if (Object.getOwnPropertySymbols) {
     var symbols = Object.getOwnPropertySymbols(object);
     enumerableOnly && (symbols = symbols.filter(function (sym) {
       return Object.getOwnPropertyDescriptor(object, sym).enumerable;
     })), keys.push.apply(keys, symbols);
   }
-
   return keys;
 }
-
 function _objectSpread2(target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
@@ -160,10 +141,8 @@ function _objectSpread2(target) {
       Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-
   return target;
 }
-
 function _defineProperty(obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
@@ -175,7 +154,6 @@ function _defineProperty(obj, key, value) {
   } else {
     obj[key] = value;
   }
-
   return obj;
 }
 
@@ -183,11 +161,9 @@ class Http {
   constructor(fetch) {
     this.fetch = fetch;
   }
-
   async get(url) {
     return this._basicRequest(url);
   }
-
   async postJson(url, body) {
     return this._basicRequest(url, {
       method: 'POST',
@@ -197,7 +173,6 @@ class Http {
       body: JSON.stringify(body)
     });
   }
-
   async _basicRequest(url, options = {}) {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 30000);
@@ -209,7 +184,6 @@ class Http {
       return result;
     });
   }
-
 }
 
 class EndpointResolver {
@@ -220,13 +194,11 @@ class EndpointResolver {
     this.http = new Http(fetch);
     this._cache = {};
   }
-
   static create(dnsClient, fetch) {
     const instance = new EndpointResolver(null, fetch);
     instance.dnsClient = dnsClient;
     return instance;
   }
-
   async getIdentityUrlFor(aPaymail) {
     const [alias, domain] = aPaymail.split('@');
     await this.ensureCapabilityFor(domain, CapabilityCodes.pki);
@@ -234,7 +206,6 @@ class EndpointResolver {
     const identityUrl = apiDescriptor.capabilities.pki.replace('{alias}', alias).replace('{domain.tld}', domain);
     return identityUrl;
   }
-
   async getAddressUrlFor(aPaymail) {
     const [alias, domain] = aPaymail.split('@');
     await this.ensureCapabilityFor(domain, CapabilityCodes.paymentDestination);
@@ -242,7 +213,6 @@ class EndpointResolver {
     const addressUrl = apiDescriptor.capabilities.paymentDestination.replace('{alias}', alias).replace('{domain.tld}', domain);
     return addressUrl;
   }
-
   async getVerifyUrlFor(aPaymail, aPubkey) {
     const [alias, domain] = aPaymail.split('@');
     await this.ensureCapabilityFor(domain, CapabilityCodes.verifyPublicKeyOwner);
@@ -250,7 +220,6 @@ class EndpointResolver {
     const url = apiDescriptor.capabilities[CapabilityCodes.verifyPublicKeyOwner].replace('{alias}', alias).replace('{domain.tld}', domain).replace('{pubkey}', aPubkey);
     return url;
   }
-
   async getPublicProfileUrlFor(aPaymail) {
     const [alias, domain] = aPaymail.split('@');
     await this.ensureCapabilityFor(domain, CapabilityCodes.publicProfile);
@@ -258,7 +227,6 @@ class EndpointResolver {
     const url = apiDescriptor.capabilities[CapabilityCodes.publicProfile].replace('{alias}', alias).replace('{domain.tld}', domain);
     return url;
   }
-
   async getSendTxUrlFor(aPaymail) {
     const [alias, domain] = aPaymail.split('@');
     await this.ensureCapabilityFor(domain, CapabilityCodes.receiveTransaction);
@@ -266,7 +234,6 @@ class EndpointResolver {
     const url = apiDescriptor.capabilities[CapabilityCodes.receiveTransaction].replace('{alias}', alias).replace('{domain.tld}', domain);
     return url;
   }
-
   async getP2pPatmentDestinationUrlFor(aPaymail) {
     const [alias, domain] = aPaymail.split('@');
     await this.ensureCapabilityFor(domain, CapabilityCodes.p2pPaymentDestination);
@@ -274,17 +241,14 @@ class EndpointResolver {
     const url = apiDescriptor.capabilities[CapabilityCodes.p2pPaymentDestination].replace('{alias}', alias).replace('{domain.tld}', domain);
     return url;
   }
-
   async domainHasCapability(aDomain, capability) {
     const apiDescriptor = await this.getApiDescriptionFor(aDomain);
     return !!apiDescriptor.capabilities[capability];
   }
-
   async getApiDescriptionFor(aDomain) {
     if (this._cache[aDomain]) {
       return this._cache[aDomain];
     }
-
     const {
       domain,
       port
@@ -293,16 +257,13 @@ class EndpointResolver {
     this._cache[aDomain] = apiDescriptor;
     return apiDescriptor;
   }
-
   async fetchApiDescriptor(domain, port) {
     const protocol = domain === 'localhost' || domain === 'localhost.' ? 'http' : 'https';
     const requestPort = port.toString() === '443' ? '' : `:${port}`;
     const requestDomain = /^(.*?)\.?$/.exec(domain)[1]; // Get value from capture group
-
     if (!requestDomain) {
       throw new Error(`Invalid domain: ${domain}`);
     }
-
     const wellKnown = await this.http.get(`${protocol}://${domain}${requestPort}/.well-known/bsvalias`, {
       headers: {
         accept: 'application/dns-json'
@@ -311,17 +272,14 @@ class EndpointResolver {
     const apiDescriptor = await wellKnown.json();
     return apiDescriptor;
   }
-
   async getWellKnownBaseUrl(aDomain) {
     return this.dnsClient.checkSrv(aDomain);
   }
-
   async ensureCapabilityFor(aDomain, aCapability) {
     if (!(await this.domainHasCapability(aDomain, aCapability))) {
       throw new Error(`Unknown capability "${aCapability}" for "${aDomain}"`);
     }
   }
-
 }
 
 class VerifiableMessage {
@@ -329,12 +287,10 @@ class VerifiableMessage {
     if (bsv === null) {
       bsv = require('bsv');
     }
-
     this.bsv = bsv;
     const concatenated = Buffer.from(parts.join(''));
     this.message = new bsv.Bsm(concatenated);
   }
-
   static forBasicAddressResolution({
     senderHandle,
     amount,
@@ -344,25 +300,20 @@ class VerifiableMessage {
     if (dt.toISOString) {
       dt = dt.toISOString();
     }
-
     return new VerifiableMessage([senderHandle, amount || '0', dt, purpose]);
   }
-
   sign(privateKey) {
     return this.bsv.Bsm.sign(this.message.messageBuf, this.bsv.KeyPair.fromPrivKey(privateKey));
   }
-
   verify(signature, keyAddress) {
     return this.bsv.Bsm.verify(this.message.messageBuf, signature, keyAddress);
   }
-
 }
 
 class RequestBodyFactory {
   constructor(clock) {
     this.clock = clock;
   }
-
   buildBodyToRequestAddress(senderInfo, privateKey = null) {
     const {
       senderHandle,
@@ -372,18 +323,14 @@ class RequestBodyFactory {
       pubkey,
       signature: providedSignature
     } = senderInfo;
-
     if (!providedSignature && privateKey === null) {
       throw new Error('Missing private key or signature');
     }
-
     let dt, signature;
-
     if (providedSignature) {
       if (!senderInfo.dt) {
         throw new Error('missing datetime for given signature');
       }
-
       dt = senderInfo.dt;
       signature = providedSignature;
     } else {
@@ -395,7 +342,6 @@ class RequestBodyFactory {
         purpose
       }).sign(privateKey);
     }
-
     return {
       senderHandle,
       senderName,
@@ -406,7 +352,6 @@ class RequestBodyFactory {
       signature
     };
   }
-
   buildBodySendTx(hexTransaction, reference, metadata) {
     return {
       hex: hexTransaction,
@@ -414,20 +359,17 @@ class RequestBodyFactory {
       reference
     };
   }
-
   buildBodyP2pPaymentDestination(satoshis) {
     return {
       satoshis
     };
   }
-
 }
 
 class Clock {
   now() {
     return moment();
   }
-
 }
 
 class PaymailNotFound extends Error {
@@ -435,24 +377,23 @@ class PaymailNotFound extends Error {
     super(message);
     this.paymail = paymail;
   }
-
 }
 
 class BrowserDns {
   constructor(fetch) {
     // https://cloudflare-dns.com/dns-query
     // https://developers.cloudflare.com/1.1.1.1/encryption/dns-over-https/make-api-requests/dns-json/
+
     // https://dns.google.com/resolve
     // https://developers.google.com/speed/public-dns/docs/doh/json
+
     this.doh = new DnsOverHttps(fetch, {
       baseUrl: 'https://cloudflare-dns.com/dns-query'
     });
   }
-
   async resolveSrv(aDomain, aCallback) {
     try {
       const response = await this.doh.resolveSrv(aDomain);
-
       if (response.Status === 0 && response.Answer) {
         const data = response.Answer.map(record => {
           const [priority, weight, port, name] = record.data.split(' ');
@@ -476,7 +417,6 @@ class BrowserDns {
       aCallback(e);
     }
   }
-
 }
 
 class PaymailClient {
@@ -484,27 +424,23 @@ class PaymailClient {
     if (fetch2 === null) {
       fetch2 = fetch;
     }
-
     if (dns === null) {
       dns = new BrowserDns(fetch2);
     }
-
     if (bsv === null) {
       bsv = require('bsv');
     }
-
     this.bsv = bsv;
     this.resolver = new EndpointResolver(dns, fetch2);
     this.http = new Http(fetch2);
     this.requestBodyFactory = new RequestBodyFactory(clock !== null ? clock : new Clock());
   }
+
   /**
    * Uses pki flow to query for an identity key for a given paymail address.
    *
    * @param {String} paymail - a paymail address
    */
-
-
   async getPublicKey(paymail) {
     const identityUrl = await this.resolver.getIdentityUrlFor(paymail);
     const response = await this.http.get(identityUrl);
@@ -513,6 +449,7 @@ class PaymailClient {
     } = await response.json();
     return pubkey;
   }
+
   /**
    * Uses `Basic Address Resolution` flow to query for a payment for output for the
    * given paymail address.
@@ -527,21 +464,18 @@ class PaymailClient {
    * @param {String} senderInfo.signature - Optional. Valid signature according to paymail specification.
    * @param {String} privateKey - Optional. private key to sign the request.
    */
-
-
   async getOutputFor(aPaymail, senderInfo, privateKey = null) {
     const addressUrl = await this.resolver.getAddressUrlFor(aPaymail);
     const response = await this.http.postJson(addressUrl, this.requestBodyFactory.buildBodyToRequestAddress(senderInfo, privateKey));
-
     if (!response.ok) {
       throw new PaymailNotFound(`Paymail not found: ${aPaymail}`, aPaymail);
     }
-
     const {
       output
     } = await response.json();
     return output;
   }
+
   /**
    * Verify if the given public address belongs to the given
    * paymail address.
@@ -549,8 +483,6 @@ class PaymailClient {
    * @param {String} pubkey - Public key to check.
    * @param {String} paymail - a paymail address
    */
-
-
   async verifyPubkeyOwner(pubkey, paymail) {
     const url = await this.resolver.getVerifyUrlFor(paymail, pubkey);
     const response = await this.http.get(url);
@@ -560,6 +492,7 @@ class PaymailClient {
     } = body;
     return match;
   }
+
   /**
    * Verifies if a given signature is valid for a given message. It uses
    * different strategies depending on the capabilities of the server
@@ -574,15 +507,11 @@ class PaymailClient {
    * @param {String} paymail - Signature owner paymail
    * @param {String} pubkey - Optional. Public key that validates the signature.
    */
-
-
   async isValidSignature(message, signature, paymail = null, pubkey = null) {
     if (paymail == null && pubkey === null) {
       throw new Error('Must specify either paymail or pubkey');
     }
-
     let senderPublicKey;
-
     if (paymail) {
       if (pubkey && (await this.resolver.domainHasCapability(paymail.split('@')[1], CapabilityCodes.verifyPublicKeyOwner))) {
         if (await this.verifyPubkeyOwner(pubkey, paymail)) {
@@ -592,7 +521,6 @@ class PaymailClient {
         }
       } else {
         const hasPki = await this.resolver.domainHasCapability(paymail.split('@')[1], CapabilityCodes.pki);
-
         if (hasPki) {
           const identityKey = await this.getPublicKey(paymail);
           senderPublicKey = this.bsv.PubKey.fromString(identityKey);
@@ -601,9 +529,7 @@ class PaymailClient {
         }
       }
     }
-
     const senderKeyAddress = this.bsv.Address.fromPubKey(senderPublicKey || pubkey);
-
     try {
       const verified = message.verify(signature, senderKeyAddress.toString());
       return verified;
@@ -611,23 +537,20 @@ class PaymailClient {
       return false;
     }
   }
+
   /**
    * Gets the public profile information using the "Public Profile" protocol.
    *
    * @param {String} paymail - a paymail address
    * @param {String} s - the preferred size of the image
    */
-
-
   async getPublicProfile(paymail) {
     const publicProfileUrl = await this.resolver.getPublicProfileUrlFor(paymail);
     const response = await this.http.get(publicProfileUrl);
-
     if (!response.ok) {
       const body = await response.json();
       throw new Error(`Server failed with: ${JSON.stringify(body)}`);
     }
-
     const {
       avatar,
       name
@@ -637,45 +560,34 @@ class PaymailClient {
       name
     };
   }
-
   async sendRawTx(targetPaymail, hexTransaction, reference, metadata = {}) {
     if (!hexTransaction) {
       throw new Error('transaction hex cannot be empty');
     }
-
     const receiveTxUrl = await this.resolver.getSendTxUrlFor(targetPaymail);
     const response = await this.http.postJson(receiveTxUrl, this.requestBodyFactory.buildBodySendTx(hexTransaction, reference, metadata));
-
     if (!response.ok) {
       const body = await response.json();
       throw new Error(`Server failed with: ${JSON.stringify(body)}`);
     }
-
     return response.json();
   }
-
   async getP2pPaymentDestination(targetPaymail, satoshis) {
     if (!satoshis) {
       throw new Error('Amount in satohis needs to be specified');
     }
-
     const paymentDestinationUrl = await this.resolver.getP2pPatmentDestinationUrlFor(targetPaymail);
     const response = await this.http.postJson(paymentDestinationUrl, this.requestBodyFactory.buildBodyP2pPaymentDestination(satoshis));
-
     if (!response.ok) {
       const body = await response.json();
       throw new Error(`Server failed with: ${JSON.stringify(body)}`);
     }
-
     const body = await response.json();
-
     if (!body.outputs) {
       throw new Error('Server answered with a wrong format. Missing outputs');
     }
-
     return body;
   }
-
 }
 
 export { BrowserDns, CapabilityCodes, Clock, PaymailClient, PaymailNotFound, RequestBodyFactory, VerifiableMessage };
