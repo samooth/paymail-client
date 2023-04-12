@@ -3,11 +3,15 @@ import builtins from 'rollup-plugin-node-builtins'
 import commonJS from '@rollup/plugin-commonjs'
 import fs from 'fs'
 import globals from 'rollup-plugin-node-globals'
-import { terser } from 'rollup-plugin-terser'
-import path from 'path'
-import pkg from './package.json'
+import terser  from '@rollup/plugin-terser'
+import path from 'path';
+import {fileURLToPath} from 'url';
+import pkg from './package.json' assert { type: "json" };
 import replace from '@rollup/plugin-replace'
 import resolve from '@rollup/plugin-node-resolve'
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const PRODUCTION_BUILD = process.env.NODE_ENV === 'production'
 

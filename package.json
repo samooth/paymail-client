@@ -3,6 +3,7 @@
   "version": "0.38.4",
   "description": "Isomorphic Paymail utilities.",
   "main": "dist/paymail-client.cjs.js",
+  "type": "module",
   "module": "dist/paymail-client.esm.js",
   "unpkg": "dist/paymail-client.iife.js",
   "library": "PaymailClient",
@@ -27,43 +28,43 @@
     "access": "public"
   },
   "dependencies": {
-    "@babel/runtime": "7.18.9",
-    "@moneybutton/brfc": "^0.38.8",
-    "@rollup/plugin-babel": "^5.3.1",
+    "@babel/eslint-parser": "^7.21.3",
+    "@babel/runtime": "7.21.0",
+    "@moneybutton/brfc": "github:samooth/brfc",
+    "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-terser": "^0.4.1",
     "abort-controller": "3.0.0",
     "browser-resolve": "^2.0.0",
     "cross-fetch": "^3.1.5",
     "esmify": "^2.1.1",
-    "moment": "2.29.4"
+    "moment": "^2.29.4"
   },
   "peerDependencies": {
-    "bsv": "2.0.10"
+    "bsv": "git+https://github.com/samooth/bsv"
   },
   "devDependencies": {
-    "@babel/cli": "7.18.10",
-    "@babel/core": "7.18.10",
-    "@babel/plugin-proposal-object-rest-spread": "7.18.9",
-    "@babel/plugin-transform-runtime": "7.18.10",
-    "@babel/preset-env": "7.18.10",
-    "@rollup/plugin-commonjs": "22.0.1",
-    "@rollup/plugin-node-resolve": "13.3.0",
-    "@rollup/plugin-replace": "4.0.0",
-    "babel-eslint": "9.0.0",
+    "@babel/cli": "7.21.0",
+    "@babel/core": "7.21.4",
+    "@babel/plugin-proposal-object-rest-spread": "7.20.7",
+    "@babel/plugin-transform-runtime": "7.21.4",
+    "@babel/preset-env": "7.21.4",
+    "@rollup/plugin-commonjs": "24.1.0",
+    "@rollup/plugin-node-resolve": "15.0.2",
+    "@rollup/plugin-replace": "5.0.2",
     "bdd-lazy-var": "2.6.1",
-    "chai": "^4.3.6",
-    "dotenv-cli": "6.0.0",
+    "chai": "^4.3.7",
+    "dotenv-cli": "7.2.1",
     "events": "^3.3.0",
     "http-server": "14.1.1",
-    "mocha": "10.0.0",
+    "mocha": "10.2.0",
     "process": "^0.11.10",
-    "rollup": "2.77.2",
+    "rollup": "3.20.2",
     "rollup-plugin-node-builtins": "2.1.2",
     "rollup-plugin-node-globals": "1.4.0",
-    "rollup-plugin-terser": "^7.0.2",
     "should": "13.2.3",
     "standard": "17.0.0",
     "stream-browserify": "^3.0.0",
-    "util": "^0.12.4"
+    "util": "^0.12.5"
   },
   "standard": {
     "globals": [
