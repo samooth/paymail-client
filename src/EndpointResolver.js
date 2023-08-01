@@ -77,7 +77,6 @@ class EndpointResolver {
   }
 
   async getApiDescriptionFor (aDomain) {
-
     if (this._cache[aDomain]) {
       return this._cache[aDomain]
     }

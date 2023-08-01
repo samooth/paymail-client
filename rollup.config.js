@@ -56,7 +56,7 @@ export default [
             file: pkg.unpkg,
             format: 'iife',
             name: pkg.library,
-            globals: { bsv: 'bsvjs' }
+            globals: { bsv: 'bsv' }
           }
         ],
         context: 'window',
@@ -121,5 +121,6 @@ function getReplacements () {
   for (const key in process.env) {
     replacements[`process.env.${key}`] = JSON.stringify(process.env[key])
   }
+  replacements["preventAssignment"]=true
   return replacements
 }

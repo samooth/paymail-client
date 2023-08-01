@@ -18,7 +18,7 @@ class VerifiableMessage {
       dt = dt.toISOString()
     }
 
-   return new VerifiableMessage([
+    return new VerifiableMessage([
       senderHandle,
       amount || '0',
       dt,
@@ -27,11 +27,11 @@ class VerifiableMessage {
   }
 
   sign (privateKey) {
-      return this.bsv.Bsm.sign(this.message.messageBuf, this.bsv.KeyPair.fromPrivKey(privateKey) )
+    return this.bsv.Bsm.sign(this.message.messageBuf, this.bsv.KeyPair.fromPrivKey(privateKey))
   }
 
   verify (signature, keyAddress) {
-    return this.bsv.Bsm.verify(this.message.messageBuf,  signature, keyAddress )
+    return this.bsv.Bsm.verify(this.message.messageBuf, signature, keyAddress)
   }
 }
 

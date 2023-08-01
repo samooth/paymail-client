@@ -117,7 +117,7 @@ class PaymailClient {
 
     const senderKeyAddress = this.bsv.Address.fromPubKey(senderPublicKey || pubkey)
     try {
-      const verified = message.verify( signature, senderKeyAddress.toString())
+      const verified = message.verify(signature, senderKeyAddress.toString())
       return verified
     } catch (err) {
       return false
