@@ -1,4 +1,4 @@
-# @moneybutton/paymail-client
+# @samooth/paymail-client
 
 ## Description
 
