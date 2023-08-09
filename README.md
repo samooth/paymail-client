@@ -7,13 +7,13 @@ Javascript client to interact with BSV paymail protocol.
 ## Ussage.
 
 ``` javascript
-import { PaymailClient, VerifiableMessage } from '@moneybutton/paymail-client'
+import { PaymailClient, VerifiableMessage } from '@samooth/paymail-client'
 import fetch from 'isomorphic-fetch'
 import dns from 'dns'
 import bsv from 'bsv'
 
 const client = new PaymailClient(dns, fetch) // Any implementation of fetch can be used.
-const somePaymailAddress = 'some_name@moneybutton.com'
+const somePaymailAddress = 'some@domain.tld'
 client.getPublicKey(somePaymailAddress).then(pubkey => {
   console.log(`Current public key for ${somePaymailAddress} is ${pubkey}`)
 })
@@ -21,7 +21,7 @@ client.getPublicKey(somePaymailAddress).then(pubkey => {
 // You can look for someones public identity key.
 const senderPrivateKey = 'L3kZEuaEgdfsV7BXCrwhs8E9BuJaN67HvdkSNTfy3CmKjbXkBEjX'
 client.getOutputFor(somePaymailAddress, {
-    senderHandle: 'sender@moneybutton.com',
+    senderHandle: 'sender@domain.tld',
     amount: 10000, // Amount in satoshis
     senderName: 'Mr. Sender',
     purpose: 'Pay for your services.',
@@ -35,14 +35,14 @@ import { VerifiableMessage } from '@moneybutton/paymail-client'
 
 const timestamp = new Date().toISOString()
 const preMadeSignature = VerifiableMessage.forBasicAddressResolution({
-  senderHandle: 'sender@moneybutton.com',
+  senderHandle: 'sender@domain.tld',
   amount: 10000,
   dt: timestamp,
   purpose: 'Pay for your services.'
 }).sign('senderPrivateKey')
 
 client.getOutputFor(somePaymailAddress, {
-  senderHandle: 'sender@moneybutton.com',
+  senderHandle: 'sender@domain.tld',
   amount: 10000, // Amount in satoshis
   senderName: 'Mr. Sender',
   purpose: 'Pay for your services.',
@@ -54,15 +54,15 @@ client.getOutputFor(somePaymailAddress, {
 
 // You can check if a given key belongs to a given paymail
 const somePubKey = bsv.PrivateKey.fromRandom().publicKey.toString()
-client.verifyPubkeyOwner(somePubKey, 'someuser@moneybutton.com').then(aBoolean => {
-  console.log(`The key ${somePubKey} ${aBoleean ? 'does' : 'doesn\'t'} belongs to someuser@moneybutton.com`)
+client.verifyPubkeyOwner(somePubKey, 'someuser@domain.tld').then(aBoolean => {
+  console.log(`The key ${somePubKey} ${aBoleean ? 'does' : 'doesn\'t'} belongs to someuser@domain.tld`)
 })
 
 
 // Lastly it lets you verify if certain signature is valid for certain paymail address.
 const aMessage = new VerifiableMessage(['very', 'important', 'message'])
 const aSignature = 'some signature for the message'
-client.isValidSignature (aMessage, aSignature, 'someone@moneybutton.com').then( aBoolean => {
+client.isValidSignature (aMessage, aSignature, 'someone@domain.tld').then( aBoolean => {
   if (aBoolean) {
     console.log('the signature is valid, yey!')
   } else {
