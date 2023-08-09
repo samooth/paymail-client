@@ -16,7 +16,7 @@ class PaymailClient {
       dns = new BrowserDns(fetch2)
     }
     if (bsv === null) {
-      bsv = require('bsv')
+      bsv = require('bsv2')
     }
     this.bsv = bsv
     this.resolver = new EndpointResolver(dns, fetch2)

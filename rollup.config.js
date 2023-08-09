@@ -50,13 +50,13 @@ export default [
   ...(PRODUCTION_BUILD
     ? [{
         input: path.resolve(__dirname, 'src', 'index.js'),
-        external: ['bsv'],
+        external: ['bsv2'],
         output: [
           {
             file: pkg.unpkg,
             format: 'iife',
             name: pkg.library,
-            globals: { bsv: 'bsv' }
+            globals: { bsv: 'bsv2' }
           }
         ],
         context: 'window',

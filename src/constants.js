@@ -1,4 +1,4 @@
-import { brfc } from '@moneybutton/brfc'
+import { brfc } from '@samooth/brfc'
 
 export const CapabilityCodes = {
   pki: 'pki',
@@ -27,5 +27,6 @@ export const CapabilityCodes = {
     'Get no monitored payment destination (p2p payment destination)',
     ['Miguel Duarte (Money Button)', 'Ryan X. Charles (Money Button)', 'Ivan Mlinaric (Handcash)', 'Rafa (Handcash)'],
     '1.1'
-  )
+  ),
+  ordinalPayment: 'ordinalPayment'
 }

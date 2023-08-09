@@ -1,7 +1,7 @@
 class VerifiableMessage {
   constructor (parts, bsv = null) {
     if (bsv === null) {
-      bsv = require('bsv')
+      bsv = require('bsv2')
     }
     this.bsv = bsv
     const concatenated = Buffer.from(parts.join(''))

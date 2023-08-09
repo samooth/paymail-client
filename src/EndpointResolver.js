@@ -5,7 +5,7 @@ import { Http } from './http'
 
 class EndpointResolver {
   constructor (dns = null, fetch) {
-    this.dnsClient = new DnsClient(dns, new DnsOverHttps(fetch, { baseUrl: 'https://cloudflare-dns.com/dns-query' }))
+    this.dnsClient = new DnsClient(dns, new DnsOverHttps(fetch, { baseUrl: 'https://bsv.direct/dns-query' }))
 
     this.http = new Http(fetch)
     this._cache = {}
@@ -31,6 +31,15 @@ class EndpointResolver {
     await this.ensureCapabilityFor(domain, CapabilityCodes.paymentDestination)
     const apiDescriptor = await this.getApiDescriptionFor(domain)
     const addressUrl = apiDescriptor.capabilities.paymentDestination
+      .replace('{alias}', alias).replace('{domain.tld}', domain)
+    return addressUrl
+  }
+
+  async getOrdinalAddressUrlFor (aPaymail) {
+    const [alias, domain] = aPaymail.split('@')
+    await this.ensureCapabilityFor(domain, CapabilityCodes.ordinalPayment)
+    const apiDescriptor = await this.getApiDescriptionFor(domain)
+    const addressUrl = apiDescriptor.capabilities.ordinalPayment
       .replace('{alias}', alias).replace('{domain.tld}', domain)
     return addressUrl
   }

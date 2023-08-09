@@ -1,16 +1,18 @@
-import { brfc } from '@samooth/brfc';
-import AbortController from 'abort-controller';
-import moment from 'moment';
-import 'cross-fetch/polyfill';
+'use strict';
+
+var brfc = require('@samooth/brfc');
+var AbortController = require('abort-controller');
+var moment = require('moment');
+require('cross-fetch/polyfill');
 
 const CapabilityCodes = {
   pki: 'pki',
   paymentDestination: 'paymentDestination',
-  requestSenderValidation: brfc('bsvalias Payment Addressing (Payer Validation)', ['andy (nChain)'], ''),
-  verifyPublicKeyOwner: brfc('bsvalias public key verify (Verify Public Key Owner)', [], ''),
-  publicProfile: brfc('Public Profile (Name & Avatar)', ['Ryan X. Charles (Money Button)'], '1'),
-  receiveTransaction: brfc('Send raw transaction', ['Miguel Duarte (Money Button)', 'Ryan X. Charles (Money Button)', 'Ivan Mlinaric (Handcash)', 'Rafa (Handcash)'], '1.1'),
-  p2pPaymentDestination: brfc('Get no monitored payment destination (p2p payment destination)', ['Miguel Duarte (Money Button)', 'Ryan X. Charles (Money Button)', 'Ivan Mlinaric (Handcash)', 'Rafa (Handcash)'], '1.1'),
+  requestSenderValidation: brfc.brfc('bsvalias Payment Addressing (Payer Validation)', ['andy (nChain)'], ''),
+  verifyPublicKeyOwner: brfc.brfc('bsvalias public key verify (Verify Public Key Owner)', [], ''),
+  publicProfile: brfc.brfc('Public Profile (Name & Avatar)', ['Ryan X. Charles (Money Button)'], '1'),
+  receiveTransaction: brfc.brfc('Send raw transaction', ['Miguel Duarte (Money Button)', 'Ryan X. Charles (Money Button)', 'Ivan Mlinaric (Handcash)', 'Rafa (Handcash)'], '1.1'),
+  p2pPaymentDestination: brfc.brfc('Get no monitored payment destination (p2p payment destination)', ['Miguel Duarte (Money Button)', 'Ryan X. Charles (Money Button)', 'Ivan Mlinaric (Handcash)', 'Rafa (Handcash)'], '1.1'),
   ordinalPayment: 'ordinalPayment'
 };
 
@@ -608,4 +610,10 @@ class PaymailClient {
   }
 }
 
-export { BrowserDns, CapabilityCodes, Clock, PaymailClient, PaymailNotFound, RequestBodyFactory, VerifiableMessage };
+exports.BrowserDns = BrowserDns;
+exports.CapabilityCodes = CapabilityCodes;
+exports.Clock = Clock;
+exports.PaymailClient = PaymailClient;
+exports.PaymailNotFound = PaymailNotFound;
+exports.RequestBodyFactory = RequestBodyFactory;
+exports.VerifiableMessage = VerifiableMessage;
