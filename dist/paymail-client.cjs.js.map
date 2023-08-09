@@ -1,1 +1,0 @@
-{"mappings":";;A,Y,C;;AAAA,IAAA,0BAAA,GAAA,4CAAA,CAAA,UAAA,CAAA,AAAA;A,S,4C,C,G,E;I,O,G,I,G,C,U,G,G,G;Q,S,E,G;K,C;C;AACAA,MAAM,CAACC,GAAP,GAAWA,0BAAAA,CAAAA,SAAAA,CAAX,CAAAD","sources":["dns.js"],"sourcesContent":["import dns from 'dns'\nwindow.dns=dns\n"],"names":["window","dns"],"version":3,"file":"paymail-client.cjs.js.map"}

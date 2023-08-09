@@ -3,7 +3,9 @@ import { RequestBodyFactory } from './RequestBodyFactory'
 import { Clock } from './Clock'
 import { PaymailNotFound } from './errors/PaymailNotFound'
 import { CapabilityCodes } from './constants'
-import fetch from 'cross-fetch'
+//import fetch from 'cross-fetch'
+import 'cross-fetch/polyfill';
+
 import { BrowserDns } from './BrowserDns'
 import { Http } from './http'
 
