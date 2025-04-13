@@ -1,6 +1,6 @@
 {
   "name": "@samooth/paymail-client",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Isomorphic Paymail Utilities.",
   "commonjs": "dist/paymail-client.cjs",
   "type": "module",
