@@ -6,7 +6,7 @@ import globals from 'rollup-plugin-node-globals'
 import terser  from '@rollup/plugin-terser'
 import path from 'path';
 import {fileURLToPath} from 'url';
-import pkg from './package.json' assert { type: "json" };
+import pkg from './package.json' with { type: "json" };
 import replace from '@rollup/plugin-replace'
 import resolve from '@rollup/plugin-node-resolve'
 
