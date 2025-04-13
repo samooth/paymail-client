@@ -1,5 +1,3 @@
-import AbortController from 'abort-controller'
-
 class Http {
   constructor (fetch) {
     this.fetch = fetch
@@ -19,18 +17,16 @@ class Http {
     })
   }
 
-  async _basicRequest (url, options = {}) {
-    const controller = new AbortController()
-    const timer = setTimeout(() => controller.abort(), 30000)
-    return this.fetch(url, {
-      ...options,
-      credentials: 'omit',
-      signal: controller.signal
-    }).then(result => {
-      clearTimeout(timer)
-      return result
-    })
+  async _basicRequest (url, options = { timeOut:30000}) {
+    if (!options?.timeOut) options.timeOut=30000
+    return Promise.race([
+      this.fetch(url, {
+        ...options,
+        credentials: 'omit',
+      }), 
+     new Promise((_, reject) => setTimeout(() => reject(new Error('Request timed out')), options.timeOut))
+    ])
   }
-}
+};
 
 export { Http }

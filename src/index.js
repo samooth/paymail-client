@@ -6,7 +6,7 @@ import { PaymailNotFound } from './errors/PaymailNotFound'
 import { BrowserDns } from './BrowserDns'
 import { CapabilityCodes } from './constants'
 
-export {
+export default {
   PaymailClient,
   VerifiableMessage,
   RequestBodyFactory,

@@ -1,12 +1,12 @@
 {
   "name": "@samooth/paymail-client",
-  "version": "0.4.5",
+  "version": "0.5.0",
   "description": "Isomorphic Paymail Utilities.",
   "commonjs": "dist/paymail-client.cjs",
   "type": "module",
-  "main": "dist/paymail-client.cjs",
-  "module": "dist/paymail-client.esm.js",
-  "unpkg": "dist/paymail-client.iife.js",
+  "main": "dist/paymail-client.umd.cjs",
+  "module": "dist/paymail-client.js",
+  "unpkg": "dist/paymail-client.umd.cjs",
   "library": "PaymailClient",
   "files": [
     "dist/**"
@@ -16,8 +16,8 @@
     "fix": "standard --fix",
     "pretest": "yarn lint",
     "test": "npx mocha",
-    "build": "rollup -c",
-    "build:dev": "rollup -c",
+    "build": "vite build",
+    "build:dev": "vite",
     "build:prod": "NODE_ENV=production yarn build",
     "build:watch": "yarn build -w",
     "dev": "yarn build:watch"
@@ -29,28 +29,17 @@
     "access": "public"
   },
   "dependencies": {
-    "@babel/runtime": "7.27.0",
-    "@samooth/brfc": "^0.38.11",
-    "abort-controller": "3.0.0",
-    "bsv2": "^2.1.1",
+    "@samooth/brfc": "^0.39.0",
+    "bsv2": "^2.1.2",
     "cross-fetch": "4.1.0",
     "http-status-codes": "^2.3.0",
     "moment": "2.30.1",
     "pure-cache": "^1.0.6"
   },
   "devDependencies": {
-    "@babel/cli": "7.27.0",
-    "@babel/core": "^7.26.10",
-    "@babel/eslint-parser": "^7.27.0",
-    "@babel/plugin-proposal-object-rest-spread": "7.20.7",
-    "@babel/plugin-transform-runtime": "7.26.10",
-    "@babel/preset-env": "7.26.9",
+    "@babel/plugin-transform-runtime": "^7.26.10",
+    "@babel/preset-env": "^7.26.9",
     "@babel/register": "^7.25.9",
-    "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/plugin-commonjs": "28.0.3",
-    "@rollup/plugin-node-resolve": "16.0.1",
-    "@rollup/plugin-replace": "6.0.2",
-    "@rollup/plugin-terser": "^0.4.4",
     "bdd-lazy-var": "2.6.1",
     "chai": "^5.2.0",
     "dotenv-cli": "8.0.0",
@@ -59,11 +48,10 @@
     "http-server": "14.1.1",
     "mocha": "11.1.0",
     "process": "^0.11.10",
-    "rollup": "4.40.0",
-    "rollup-plugin-node-builtins": "^2.1.2",
-    "rollup-plugin-node-globals": "1.4.0",
     "should": "13.2.3",
-    "standard": "17.1.2"
+    "standard": "17.1.2",
+    "vite": "^6.2.6",
+    "vite-plugin-node-polyfills": "^0.23.0"
   },
   "standard": {
     "globals": [

@@ -3,24 +3,19 @@ import { RequestBodyFactory } from './RequestBodyFactory'
 import { Clock } from './Clock'
 import { PaymailNotFound } from './errors/PaymailNotFound'
 import { CapabilityCodes } from './constants'
-//import fetch from 'cross-fetch'
-import 'cross-fetch/polyfill';
-
+import 'cross-fetch/polyfill'
 import { BrowserDns } from './BrowserDns'
 import { Http } from './http'
+import { PubKey, Address } from 'bsv2'
 
 class PaymailClient {
-  constructor (dns = null, fetch2 = null, clock = null, bsv = null) {
+  constructor (dns = null, fetch2 = null, clock = null) {
     if (fetch2 === null) {
       fetch2 = fetch
     }
     if (dns === null) {
       dns = new BrowserDns(fetch2)
     }
-    if (bsv === null) {
-      bsv = require('bsv2')
-    }
-    this.bsv = bsv
     this.resolver = new EndpointResolver(dns, fetch2)
     this.http = new Http(fetch2)
     this.requestBodyFactory = new RequestBodyFactory(clock !== null ? clock : new Clock())
@@ -34,6 +29,9 @@ class PaymailClient {
   async getPublicKey (paymail) {
     const identityUrl = await this.resolver.getIdentityUrlFor(paymail)
     const response = await this.http.get(identityUrl)
+    if (!response.ok) {
+      throw new Error("Error on response: ",JSON.stringify(response))
+    }    
     const { pubkey } = await response.json()
     return pubkey
   }
@@ -102,7 +100,7 @@ class PaymailClient {
     if (paymail) {
       if (pubkey && await this.resolver.domainHasCapability(paymail.split('@')[1], CapabilityCodes.verifyPublicKeyOwner)) {
         if (await this.verifyPubkeyOwner(pubkey, paymail)) {
-          senderPublicKey = this.bsv.PubKey.fromString(pubkey)
+          senderPublicKey = PubKey.fromString(pubkey)
         } else {
           return false
         }
@@ -110,14 +108,14 @@ class PaymailClient {
         const hasPki = await this.resolver.domainHasCapability(paymail.split('@')[1], CapabilityCodes.pki)
         if (hasPki) {
           const identityKey = await this.getPublicKey(paymail)
-          senderPublicKey = this.bsv.PubKey.fromString(identityKey)
+          senderPublicKey = PubKey.fromString(identityKey)
         } else {
           return false
         }
       }
     }
 
-    const senderKeyAddress = this.bsv.Address.fromPubKey(senderPublicKey || pubkey)
+    const senderKeyAddress = Address.fromPubKey(senderPublicKey || pubkey)
     try {
       const verified = message.verify(signature, senderKeyAddress.toString())
       return verified

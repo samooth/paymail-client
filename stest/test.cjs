@@ -1,4 +1,4 @@
-const { PaymailClient, VerifiableMessage } = require('../dist/paymail-client.cjs')
+const { PaymailClient, VerifiableMessage } = require('../dist/paymail-client.umd.cjs')
 
 const bsv = require('bsv2')
 
@@ -20,19 +20,19 @@ let ThePubKey
 
   // You can look for someones public identity key.
 
-  client.getPublicKey(somePaymailAddress).then(pubkey => {
+  await client.getPublicKey(somePaymailAddress).then(pubkey => {
     console.log(`Current public key for ${somePaymailAddress} is ${pubkey}`)
     ThePubKey = pubkey
   })
 
-  client.getPublicProfile(somePaymailAddress).then(profile => {
+  await client.getPublicProfile(somePaymailAddress).then(profile => {
     console.log(`Profile of ${somePaymailAddress}:`)
     console.log(`Avatar: ${profile.avatar}`)
     console.log(`Name: ${profile.name}`)
   })
 
   console.log(senderPrivateKey.toString())
-  client.getOutputFor(somePaymailAddress, {
+  await client.getOutputFor(somePaymailAddress, {
     senderHandle: 'bsvdirect@handcash.io',
     amount: 10000, // Amount in satoshis
     senderName: 'Mr. Sender',
@@ -43,7 +43,7 @@ let ThePubKey
   })
 
   console.log(senderPrivateKey.toString())
-  client.getOutputFor('samooth@volt.id', {
+  await client.getOutputFor('samooth@volt.id', {
     senderHandle: 'bsvdirect@handcash.io',
     amount: 10000, // Amount in satoshis
     senderName: 'Mr. Sender',
@@ -51,8 +51,8 @@ let ThePubKey
     pubkey: ThePubKey
   }, senderPrivateKey).then(output => {
     console.log(`Now I can send money to samooth@volt.id using this output: ${output}`)
-  }).catch((e)=>{
-  console.log("There was an error")
+  }).catch((e) => {
+    console.log('There was an error')
   })
 
   /*
