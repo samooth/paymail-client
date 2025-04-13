@@ -1,5 +1,5 @@
 /**
- * Copyright 2023 Tomás Díaz.
+ * Copyright 2025 Tomás Díaz.
  * Copyright 2019 Yours Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy

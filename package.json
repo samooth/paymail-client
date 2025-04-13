@@ -15,12 +15,12 @@
     "lint": "standard",
     "fix": "standard --fix",
     "pretest": "yarn lint",
-    "test": "npx mocha",
+    "test": "vitest",
     "build": "vite build",
-    "build:dev": "vite",
-    "build:prod": "NODE_ENV=production yarn build",
-    "build:watch": "yarn build -w",
-    "dev": "yarn build:watch"
+    "build:dev": "NODE_ENV=development npm run build",
+    "build:prod": "NODE_ENV=production npm run build",
+    "build:watch": "npm build -w",
+    "dev": "npm run build:watch"
   },
   "repository": "https://github.com/samooth/paymail-client",
   "author": "Fermatted Drives Limited and Tomás Díaz",
@@ -46,12 +46,12 @@
     "eslint": "^9.24.0",
     "events": "^3.3.0",
     "http-server": "14.1.1",
-    "mocha": "11.1.0",
     "process": "^0.11.10",
     "should": "13.2.3",
     "standard": "17.1.2",
     "vite": "^6.2.6",
-    "vite-plugin-node-polyfills": "^0.23.0"
+    "vite-plugin-node-polyfills": "^0.23.0",
+    "vitest": "^3.1.1"
   },
   "standard": {
     "globals": [
