@@ -7,10 +7,12 @@ Javascript client to interact with BSV paymail protocol.
 ## Ussage.
 
 ``` javascript
-import { PaymailClient, VerifiableMessage } from '@samooth/paymail-client'
+import { default as PayMail } from '@samooth/paymail-client'
 import fetch from 'isomorphic-fetch'
 import dns from 'dns'
 import bsv from 'bsv'
+
+let { PaymailClient, VerifiableMessage } = PayMail
 
 const client = new PaymailClient(dns, fetch) // Any implementation of fetch can be used.
 const somePaymailAddress = 'some@domain.tld'
@@ -31,7 +33,7 @@ client.getOutputFor(somePaymailAddress, {
 })
 
 // You can also use a previously created signature instead of passing in the private key.
-import { VerifiableMessage } from '@moneybutton/paymail-client'
+import { VerifiableMessage } from '@samooth/paymail-client'
 
 const timestamp = new Date().toISOString()
 const preMadeSignature = VerifiableMessage.forBasicAddressResolution({

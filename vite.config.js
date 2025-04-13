@@ -3,6 +3,9 @@ import { defineConfig } from 'vite'
 import { resolve } from 'path'
 
 export default defineConfig({
+  test:{
+    include: ["test/*.js"]
+  },
   build: {
     lib: {
       name: 'paymail-client',
